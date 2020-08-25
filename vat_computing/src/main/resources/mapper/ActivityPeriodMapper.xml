@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.ActivityPeriodMapper">  
+
+<select id="findActivityPeriod" parameterType="string" resultType="com.vat.bean.ActivityPeriod">
+        SELECT activity_period_id AS activityPeriodId,
+       		 activity_period AS activityPeriod
+         FROM user_activity_period t
+         WHERE 
+         	t.user_id= #{userId,jdbcType=VARCHAR}
+          AND t.data_type=#{dataType,jdbcType=VARCHAR}
+    </select>
+
+    <!-- insert user -->
+    <insert id = "insertActivityPeriod" parameterType="com.vat.bean.ActivityPeriod">
+        INSERT INTO user_activity_period(
+	        activity_period_id,
+	        user_id,
+	        data_type,
+	        activity_period
+        )
+        VALUES
+        (
+        	#{activityPeriod.activityPeriodId,jdbcType=VARCHAR},
+	        #{activityPeriod.userId,jdbcType=VARCHAR},
+	         #{activityPeriod.dataType,jdbcType=VARCHAR},
+	        #{activityPeriod.activityPeriod,jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <!-- delete user -->
+    <delete id="deleteActivityPeriod" parameterType="string">
+        DELETE FROM user_activity_period  
+        WHERE user_id=#{userId,jdbcType=VARCHAR}
+         AND data_type=#{dataType,jdbcType=VARCHAR}
+    </delete>
+</mapper>

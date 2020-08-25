@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增值税计算系统</title>
+    <link href="${request.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/custom-styles.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <link href="${request.contextPath}/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" /> 
+     
+     
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/vat/index.do"><em class="fa fa-gear"></em> 增值税计算系统</a></div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="${request.contextPath}/user/clearUserLogin.do"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+
+                 <#assign activeClass = "import_data">
+             	 <#include "/vat/inc/nav.html">
+                
+            </div>
+
+        </nav>
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            增值税计算 <small></small>
+                        </h1>
+                    </div>
+                </div>
+				
+				<div class="row">
+				
+				 <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            订单数据 <small>导入
+                       
+                            <#if minimumTimes?? && user.passFlag?? && user.passFlag =='N'  && beyondUsedTimes?? && beyondUsedTimes =='Y'>
+                            	（免费导入次数${minimumTimes}次，剩余0次，请联系客服续费）
+                            </#if>
+                            
+                            <#if user.passFlag?? && user.passFlag =='N' && user.useTimes?? && minimumTimes?? && beyondUsedTimes?? && beyondUsedTimes =='N'>
+                            	（免费导入次数${minimumTimes} 次，剩余${minimumTimes - user.useTimes}次）
+                            </#if>
+                            
+                            </small>
+                        </h1>
+                    </div>
+                </div> 
+           		<div class="row">
+           			<div class="col-lg-9  col-lg-offset-0" >
+					 <form id="file_form" action="${request.contextPath}/importExcel.do" enctype="multipart/form-data"  method="post" >
+					 
+					 <div class="form-group">
+                          	<label>请选择交易平台</label>
+					     	<div class="radio">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="dataType"  value="amazon"  checked="checked"/>Amazon
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="dataType"  value="eBay"/>Ebay
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="dataType"  value="GB"/>GearBest
+                                            </label>
+                                    </div>
+                         </div>
+					 
+				        <div class="form-group">
+							<div class="col-lg-7">
+									<label class="col-lg-3 control-label">Excel文件导入</label>
+				                     <#if user.passFlag?? && user.passFlag =='Y' || beyondUsedTimes?? && beyondUsedTimes !='Y'>
+		                            	<input type="file" class="form-control" name="file" id="inputfile" />
+		                            <#else>
+		                            	 <input type="file" class="form-control" name="file" id="inputfile"  disabled/>
+		                            </#if>
+		                            <span class="help-block">请导入你要计算的数据</span>
+		                        </div>
+						</div>
+				       
+				       
+				        <div class="form-group">
+                        <div class="col-lg-9 col-lg-offset-4">
+                            <#if user.passFlag?? && user.passFlag =='Y' ||  beyondUsedTimes?? && beyondUsedTimes !='Y'>
+                            	<button type="submit" class="btn btn-primary" onclick="return check(this.form);">提交</button>
+                            <#else>
+                            	 <button type="submit" class="btn btn-primary"  disabled>提交</button>
+                            </#if>
+                        </div>
+                    </div>
+				       
+			    </form>
+            </div>
+        </div>
+				</div> 
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+    <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+	<script src="${request.contextPath}/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="${request.contextPath}/assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <script src="${request.contextPath}/assets/js/self/dialog.js"></script>
+    
+
+    
+        <script>
+            $(document).ready(function () {
+            	<#if flag?? && flag =='0'>  
+            	 	 $.MsgBox.Alert("消息", "excel文件导入失败");
+            	  </#if> 
+            	  <#if flag?? && flag =='1'>  
+            	  	$.MsgBox.Alert("消息", "excel文件导入中，导入完成后可以进行计算");
+            	  </#if> 
+            	  <#if flag?? && flag =='2'>  
+            	  		$.MsgBox.Alert("消息", "用户无权限导入");
+            	  </#if> 
+            });
+            
+            function check(form){
+            	var  file =form.inputfile.value;
+            	if(!file){
+            		 $.MsgBox.Alert("消息", "请输入需要导入的Excel文件");
+            		return false;
+            	}
+            	return true;
+           }
+            
+    </script>
+    <script src="${request.contextPath}/assets/js/custom-scripts.js"></script>
+</body>
+
+</html>

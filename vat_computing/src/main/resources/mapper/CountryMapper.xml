@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.CountryMapper">  
+
+		<resultMap id="countryMapping" type="com.vat.bean.CountryVO">
+		    <!-- id属性来映射主键字段 -->
+		    <id column="country_code" property="countryCode" javaType="String"/>
+		    <!-- result属性映射非主键字段 -->
+		    <result column="country_name" property="countryName" javaType="String"/>
+		    <result column="tax_flag" property="taxFlag"  javaType="String"/>
+		    <result column="currency_code" property="currencyCode"  javaType="String"/>
+		    <result column="standard_vat_rate" property="standardVatRate"  javaType="String"/>
+		    <result column="low_vat_rate" property="lowVatRate"  javaType="String"/>
+		    <result column="init_vat_rate" property="initVatRate"  javaType="String"/>
+		</resultMap>
+
+      <select id="findTaxNoCountry"  resultMap="countryMapping">
+        	SELECT 
+	        	t.country_code,
+	        	t.country_name,
+	        	t.tax_flag,
+	        	t.currency_code,
+	        	t.standard_vat_rate,
+	        	t.low_vat_rate,
+	        	t.init_vat_rate
+        	FROM tax_no_country t 
+        	WHERE t.tax_flag='Y'
+        	ORDER BY t.order_index DESC
+      </select>
+      
+       <select id="findCountry"  parameterType="string" resultMap="countryMapping">
+        	SELECT t.country_code,t.country_name,t.tax_flag,t.currency_code,t.standard_vat_rate,t.low_vat_rate,t.init_vat_rate  
+        	FROM tax_no_country t
+        	WHERE t.country_code=#{countryCode,jdbcType=VARCHAR} 
+      </select>
+
+</mapper>

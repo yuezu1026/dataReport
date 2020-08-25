@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增值税计算系统</title>
+    <link href="${request.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/custom-styles.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> 
+     
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="${request.contextPath}/vat/index.do"><em class="fa fa-gear"></em> 增值税计算系统</a></div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="${request.contextPath}/user/clearUserLogin.do"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+           	 <#assign activeClass = "index">
+              <#include "/vat/inc/nav.html">
+            </div>
+
+        </nav>
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            增值税计算<small> 操作说明</small>
+                        </h1>
+                    </div>
+                </div>
+				
+				<div class="row">
+			 <div class="col-md-12">
+					<p>增值税计算操作说明</p>
+					<p>1 因本系统开发与谷歌浏览器配置匹配，为了稳定核算输出提升您的使用体验，建议您使用谷歌浏览器。</p>
+					<p>2 目前系统仅支持欧盟7国销项增值税计算，因进项增值税无需核算（查看C79/C88文件即可），1.0测试版暂未开发。</p>
+					<p>3 请下载完整无误的平台销售数据，并以.xlsx或.xls格式保存后再上传系统，否则系统将无法核算结果。如有疑问可联系客服协助您下载数据。</p>
+					<p>4 销售数据样本：</p>
+					亚马逊：<a href="${request.contextPath}/assets/doc/Amazon数据样本.xlsx">下载</a><br>
+					GB：<a href="${request.contextPath}/assets/doc/GB数据样本.xlsx">下载</a><br>
+					<p>5 vat-computing使用操作说明如下</p>
+					<img src="${request.contextPath}/assets/img/vat-flow.png"  height=“400” width="1100"/>
+					<p>6 使用过程中如有疑问或建议，请联系客服支持，扫码添加客服微信：</p>
+				</div> 
+				<div class="row">
+					<span style="margin-left:500px"><span>
+					<img src="${request.contextPath}/assets/img/wechatCode.jpg"  height=“120” width="120"/>
+				</div> 
+				
+				
+				</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+    <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+    <script src="${request.contextPath}/assets/js/custom-scripts.js"></script>
+
+</body>
+
+</html>

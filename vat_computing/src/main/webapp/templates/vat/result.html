@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增值税计算系统</title>
+    <link href="${request.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/custom-styles.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href="${request.contextPath}/assets/table/bootstrap-table.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/vat/index.do"><em class="fa fa-gear"></em> 增值税计算系统</a></div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="${request.contextPath}/user/clearUserLogin.do"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                
+                <#assign activeClass = "result">
+             	 <#include "/vat/inc/nav.html">
+                
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            增值税计算
+                        </h1>
+                    </div>
+                </div>
+				
+				<div class="row">
+				
+				 <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                           <small>结果</small>
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+                 
+                  <div class="panel-body">
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li class="active"><a href="#amazon" data-toggle="tab" id="am">Amazon</a>
+                                </li>
+                                <li class=""><a href="#ebay" data-toggle="tab" id="ab">Ebay</a>
+                                </li>
+                                <li class=""><a href="#gb" data-toggle="tab"  id="ac">GearBest</a>
+                                </li>
+                               
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="amazon">
+                       
+                                      <div class="panel-body">
+	                           			 <div class="table-responsive">
+	                                  		<table id="grid" class="table table-striped table-bordered table-hover"></table>
+										</div>
+									</div>
+            				 </div>
+				             <div class="tab-pane fade" id="ebay">
+				             
+				                 <div class="panel-body">
+	                           			 <div class="table-responsive">
+	                                  		<table id="grid_ebay" class="table table-striped table-bordered table-hover"></table>
+										</div>
+									</div>
+				             </div>
+				             <div class="tab-pane fade" id="gb">
+				           
+				                 <div class="panel-body">
+	                           			 <div class="table-responsive">
+	                                  		<table id="grid_gd" class="table table-striped table-bordered table-hover"></table>
+										</div>
+									</div>
+				             </div>
+         </div>
+     </div>
+     </div>
+	</div> 
+				<footer> 
+					<#import "/lib/copyright.html" as my>
+				</footer>
+            </div>
+        </div>
+    </div>
+    <script src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+    <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+    
+<script src="${request.contextPath}/assets/table/bootstrap-table.js"></script>
+<script src="${request.contextPath}/assets/table/locale/bootstrap-table-zh-CN.js"></script>
+    
+    <script>
+    
+    $(document).ready(function () {
+    	$('#myTab a').click(function (e) {
+        	  e.preventDefault()
+        	  var val=$(this).attr("id");
+        	
+        	  if(val == 'am'){
+        		  var queryUrl = '${request.contextPath}/vat/computingResult.do?dataType=Amazon&rnd=' + Math.random();
+        		  InitMainTable('grid',queryUrl);
+        	  }
+        	  
+        	  if(val == 'ab'){
+        		  //var queryUrl = '${request.contextPath}/vat/computingResult.do?dataType=Amazon&rnd=' + Math.random();
+        		 //InitMainTable('grid_ebay',queryUrl);
+        	  }
+        	  
+        	  if(val == 'ac'){
+        		  var queryUrl = '${request.contextPath}/vat/computingResult.do?dataType=GB&rnd=' + Math.random();
+        		InitMainTable('grid_gd',queryUrl);
+        	  }
+        	});
+    	<#if dataType?? && dataType ='eBay'>
+    		$('#ab').trigger('click');
+    	<#elseif dataType?? && dataType ='GB'>
+    		$('#ac').trigger('click');
+    	<#else>
+    		$('#am').trigger('click');
+		</#if>
+    });
+
+    
+    
+    
+  //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result ="<a href='${request.contextPath}/report/download.do?pdfId="+id+"'>下载</a>";
+        return result;
+    }
+    
+    //初始化bootstrap-table的内容
+    function InitMainTable(grid, queryUrl) {
+    	
+    	var rows =10;
+        //记录页面bootstrap-table全局变量$table，方便应用
+        var $table = $('#'+grid).bootstrapTable({
+        	
+            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+        	
+            url: queryUrl,                      //请求后台的URL（*）
+            method: 'POST',                      //请求方式（*）
+            //toolbar: '#toolbar',              //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+            pageSize: rows,                     //每页的记录行数（*）
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: false,                      //是否显示表格搜索
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            //得到查询的参数
+            queryParams : function (params) {
+            	
+                //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                var temp = {   
+                    rows: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    sort: params.sort,      //排序列名  
+                    sortOrder: params.order //排位命令（desc，asc）
+                };
+                return temp;
+            },
+            columns: [{
+                checkbox: false,  
+                visible: false                  //是否显示复选框  
+	            }, {
+	                field: 'pdfId',
+	                title: 'ID',
+	                sortable: true
+	            }, {
+	                field: 'reportNo',
+	                title: '报告编号',
+	                sortable: true
+	            }, {
+	                field: 'needComputingCountry',
+	                title: '所属国家',
+	                sortable: true
+	            },
+	            {
+                    field:'pdfId',
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter
+                },
+                {
+	                field: 'createDate',
+	                title: '生成时间',
+	                sortable: true
+	            }
+			],
+            onLoadSuccess: function () {
+            },
+            onLoadError: function () {
+                //showTips("数据加载失败！");
+            },
+            onDblClickRow: function (row, $element) {
+                var id = row.ID;
+                //EditViewById(id, 'view');
+            },
+        });
+    };
+    
+    
+    </script>
+    <script src="${request.contextPath}/assets/js/custom-scripts.js"></script>
+</body>
+
+</html>

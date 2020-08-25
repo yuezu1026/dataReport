@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.UserMapper">
+
+		<resultMap id="userMapping" type="com.vat.bean.User">
+		    <id column="user_id" property="userId" javaType="String"/>
+		    <result column="role_id" property="roleId" javaType="String"/>
+		    <result column="username" property="username" javaType="String"/>
+		    <result column="password" property="password" javaType="String"/>
+		    <result column="gender" property="gender"  javaType="String"/>
+		    <result column="email" property="email"  javaType="String"/>
+		    <result column="company_name" property="companyName"  javaType="String"/>
+		    <result column="telphone" property="telphone"  javaType="String"/>
+		    <result column="pass_flag" property="passFlag"  javaType="String"/>
+		     <result column="privilege_flag" property="privilegeFlag"  javaType="String"/>
+		    <result column="start_service_date" property="startServiceDate"  javaType="String"/>
+		    <result column="end_service_date" property="endServiceDate"  javaType="String"/>
+		     <result column="create_date" property="createDate"  javaType="String"/>
+		     <result column="login_times" property="loginTimes"  javaType="Integer"/>
+		     <result column="use_times" property="useTimes"  javaType="Integer"/>
+		     
+
+		</resultMap>
+
+    <insert id = "insertUser" parameterType="com.vat.bean.User"> 
+        INSERT INTO user(
+	        user_id,
+	        username,
+	        password,
+	        gender,
+	        email,
+	        company_name,
+	        telphone
+        )
+        VALUES
+        (
+	        #{user.userId,jdbcType=VARCHAR},
+	        #{user.username,jdbcType=VARCHAR},
+	        #{user.password,jdbcType=VARCHAR},
+	        #{user.gender,jdbcType=VARCHAR},
+	        #{user.email,jdbcType=VARCHAR},
+	        #{user.companyName,jdbcType=VARCHAR},
+	        #{user.telphone,jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <select id="findUserRole" parameterType="com.vat.bean.User" resultType="com.vat.bean.UserRoleVO">
+        SELECT id,
+        role_id AS roleId, 
+        user_id AS userId
+        FROM t_user_role WHERE user_id=#{user.userId,jdbcType=VARCHAR}
+    </select>
+    
+    <update id="updateUserRole" parameterType="com.vat.bean.User">
+     	UPDATE t_user_role SET role_id=#{user.roleId,jdbcType=VARCHAR} WHERE user_id=#{user.userId,jdbcType=VARCHAR}
+    </update>
+    
+    <insert id = "insertUserRole" parameterType="com.vat.bean.User">
+        INSERT INTO t_user_role(
+	        user_id,
+	        role_id
+        )
+        VALUES
+        (
+	        #{user.userId,jdbcType=VARCHAR},
+	        #{user.roleId,jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <update id="updateUserLoginTimes" parameterType="com.vat.bean.User">
+     	UPDATE user SET login_times=login_times + 1 WHERE user_id=#{user.userId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateUseTimes" parameterType="com.vat.bean.User">
+     	UPDATE user SET use_times=use_times + 1 WHERE user_id=#{user.userId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="reviewUser" parameterType="com.vat.bean.User">
+        UPDATE user SET pass_flag=#{user.passFlag,jdbcType=VARCHAR},
+          start_service_date=#{user.startServiceDate,jdbcType=VARCHAR},
+           end_service_date=#{user.endServiceDate,jdbcType=VARCHAR}
+          WHERE user_id=#{user.userId,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="findUserPassword" parameterType="com.vat.bean.User" resultType="com.vat.bean.User">
+        SELECT user_id AS userId,
+        	username,
+        	password,
+        	pass_flag AS passFlag
+        FROM user WHERE username=#{username,jdbcType=VARCHAR} AND password=#{password,jdbcType=VARCHAR}
+    </select>
+    
+     <select id="findUser" parameterType="com.vat.bean.User" resultMap="userMapping">
+        SELECT user_id,
+	        username,
+	        password,
+	        gender,
+	        email,
+	        company_name,
+	        telphone,
+	        pass_flag,
+	        privilege_flag,
+	        start_service_date,
+	        end_service_date,
+	        create_date
+	        login_times,
+	        use_times
+
+        FROM user WHERE username=#{username,jdbcType=VARCHAR}
+    </select>
+    
+    
+  <select id="findUserById" parameterType="string" resultMap="userMapping">
+        SELECT user_id,
+	        username,
+	        password,
+	        gender,
+	        email,
+	        company_name,
+	        telphone,
+	        pass_flag,
+	        privilege_flag,
+	        start_service_date,
+	        end_service_date,
+	        create_date,
+	        login_times,
+	        use_times
+        FROM user WHERE user_id=#{userId,jdbcType=VARCHAR}
+    </select>
+    
+    
+    
+    
+    <delete id="delete" parameterType="int">
+        DELETE FROM user WHERE user_id=#{0}
+    </delete>
+    
+    
+    <select id="findUserByPage" parameterType="com.vat.bean.User" resultMap="userMapping">
+        SELECT 
+            user_id,
+	        username,
+	        password,
+	        gender,
+	        email,
+	        company_name,
+	        telphone,
+	        pass_flag,
+	        privilege_flag,
+	        start_service_date,
+	        end_service_date,
+	        create_date,
+	        login_times,
+	        use_times
+         FROM user t 
+         ORDER BY t.create_date DESC
+    </select>
+    
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.ImportBatchMapper"> 
+
+<resultMap id="batchMapping" type="com.vat.bean.ImportBatchVO">
+		    <!-- id属性来映射主键字段 -->
+		    <id column="batch_id" property="batchId" javaType="String"/>
+		    <result column="user_id" property="userId" javaType="String"/>
+		    <result column="excel_name" property="excelName"  javaType="String"/>
+		    <result column="import_count" property="importCount"  javaType="String"/>
+		    <result column="start_date" property="startDate"  javaType="String"/>
+		    <result column="end_date" property="endDate"  javaType="String"/>
+		     <result column="is_finished" property="isFinished"  javaType="String"/>
+		</resultMap> 
+
+    <insert id = "insertImportBatch" parameterType="com.vat.bean.ImportBatchVO">
+        INSERT INTO import_batch(
+	        batch_id,
+	        user_id,
+	        data_type,
+	        excel_name,
+	        import_count,
+	        start_date,
+	        end_date
+        )
+        VALUES
+        (
+        	#{batch.batchId,jdbcType=VARCHAR},
+	        #{batch.userId,jdbcType=VARCHAR},
+	        #{batch.dataType,jdbcType=VARCHAR},
+	        #{batch.excelName,jdbcType=VARCHAR},
+	        #{batch.importCount,jdbcType=VARCHAR},
+	        CURRENT_TIMESTAMP,
+	         CURRENT_TIMESTAMP
+	    )
+    </insert>
+    
+    <update id = "finishBatch" parameterType="com.vat.bean.ImportBatchVO">
+	     UPDATE import_batch 
+	     SET 
+	     is_finished='Y' ,
+	     import_count= #{batch.importCount,jdbcType=VARCHAR}, 
+	     end_date=CURRENT_TIMESTAMP  
+	     WHERE batch_id=#{batch.batchId,jdbcType=VARCHAR}
+    </update>
+    
+    <delete id="deleteBatch" parameterType="string">
+        DELETE FROM import_batch WHERE user_id=#{userId,jdbcType=VARCHAR}
+    </delete>
+    
+    <select id="findSingleImportBatch"  parameterType="com.vat.bean.ImportBatchVO" resultMap="batchMapping">
+        	SELECT 
+	        	t.batch_id,
+	        	t.user_id,
+	        	t.excel_name,
+	        	t.import_count,
+	        	t.start_date,
+	        	t.end_date,
+	        	t.is_finished
+        	FROM import_batch t 
+        	WHERE t.user_id=#{batch.userId,jdbcType=VARCHAR}
+        	  AND t.data_type=#{batch.dataType,jdbcType=VARCHAR}
+        	  ORDER BY t.end_date DESC
+        	  limit 0,1
+      </select>
+
+</mapper>

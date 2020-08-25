@@ -1,0 +1,203 @@
+﻿<%@ page pageEncoding="utf-8" %>
+<%@ page contentType="text/html; charset=utf-8"%>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link href="<%=request.getContextPath()%>/assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="<%=request.getContextPath()%>/assets/css/font-awesome.css" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href="<%=request.getContextPath()%>/assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/bootstrapValidator.css"/>
+	
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-6">
+                        <h1 class="page-header">
+                            用户 <small>注册</small>
+                        </h1>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-sm-3">
+                        <form id="defaultForm" role="userReg"  action="/register"  method="post">
+                                        <div class="form-group">
+                                            <label>用户账号</label>
+                                            <input name="username"  id="username" class="form-control" placeholder="请输入用户账号">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>用户密码</label>
+                                            <input name="password" class="form-control"  type="password" placeholder="请输入用户密码">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>重新输入密码</label>
+                                            <input name="repassword"  class="form-control"  type="password"   placeholder="请再次输入用户密码">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>邮箱地址</label>
+                                            <input name="email" class="form-control" placeholder="请输入邮箱地址">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>性别</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="gender"  value="male" checked="">先生
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="gender" value="female">女士
+                                                </label>
+                                            </div>
+                                           
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>公司名称</label>
+                                            <input name="companyName" class="form-control" placeholder="请输入公司名称">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>手机号码</label>
+                                            <input name="telphone" class="form-control" placeholder="请输入手机号码">
+                                        </div>
+                                        
+                                     	<div class="form-group">
+                                     	<div class="col-lg-9 col-lg-offset-4">
+                                        	<button type="submit" class="btn btn-primary">注册</button>
+                                        	<button type="reset" class="btn btn-primary">重置</button>
+                                        </div>
+                                        </div>
+                                    </form>
+                    </div>
+                </div> 
+				 <footer>
+				 	<p>Copyright &copy; 2018.Company name All rights reserved.</p>
+				 </footer>
+				</div>
+            </div>
+        </div>
+        
+    <script src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+    <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+    <script src="${request.contextPath}/assets/js/jquery.metisMenu.js"></script>
+    <script src="${request.contextPath}/assets/js/custom-scripts.js"></script>
+    
+    <script type="text/javascript" src="${request.contextPath}/assets/js/bootstrapValidator.js"></script>        
+        
+  <script type="text/javascript">
+	$(document).ready(function() {
+    $('#defaultForm')
+        .bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    message: '用户账号不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '用户账号不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 30,
+                            message: '账号必须在6到30个字符之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '账号只能由字母，数字，点和下划线组成'
+                        }
+                    },
+                  
+                    threshold: 6, //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+                        url: '<%=request.getContextPath()%>/user/checkUserUnique',//验证地址
+                        data:{username:$('input[name="username"]').val() }
+                        },message: '用户已存在',//提示消息
+                        delay: 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                        type: 'POST'//请求方式
+                    }
+                    
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 30,
+                            message: '长度必须在6-30之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: '只能由字母，数字，点和下划线组成'
+                        }
+                    }
+                },
+                repassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '不能为空'
+                        },
+		                identical: {
+		                    field: 'password',
+		                    message: '输入的内容不一致'
+		                }
+                    }
+                },
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: '邮箱地址不能为空'
+                        },
+                        emailAddress: {
+                            message: '邮箱格式不正确'
+                        }
+                    }
+                },
+                
+                telphone: {
+                    validators: {
+                        notEmpty: {
+                            message: '手机号码不能为空'
+                        }
+                    }
+                }
+        })
+        .on('success.form.bv', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+
+            // Get the form instance
+            var $form = $(e.target);
+
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                console.log(result);
+            }, 'json');
+        });
+});
+</script>
+        
+
+    
+</body>
+</html>

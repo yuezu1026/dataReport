@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.OrderAmazonMapper">  
+
+	<select id="findActivityPeriod" parameterType="string" resultType="com.vat.bean.AmazonOrder">
+        SELECT DISTINCT activity_period FROM order_header t WHERE t.user_id= #{userId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findSaleDepartCountry" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT t.sale_depart_country FROM order_header t 
+        WHERE t.user_id= #{userId,jdbcType=VARCHAR} 
+           AND t.sale_depart_country is not null
+    </select>
+    
+      <select id="findsaleArrivalCountry" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT t.sale_arrival_country FROM order_header t 
+        WHERE t.user_id= #{userId,jdbcType=VARCHAR}
+        	AND t.sale_depart_country is not null
+    </select>
+    
+   <select id="findOrderByPage" parameterType="com.vat.bean.AmazonOrder" resultType="com.vat.bean.AmazonOrder">
+        SELECT * FROM order_header t 
+        WHERE t.user_id= #{order.user_id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="addOrder" parameterType="com.vat.bean.AmazonOrder">
+        INSERT INTO order_header (
+      		order_id,
+      		user_id,
+      		sheet_name,
+			unique_account_identifier ,  
+			 activity_period,  
+			 sales_channel,  
+			 marketplace ,  
+			 transaction_type,  
+			 transaction_event_id,  
+			 activity_transaction_id ,  
+			 tax_calculation_date,  
+			 transaction_depart_date,  
+			 transaction_arrival_date,  
+			 transaction_complete_date,  
+			 seller_sku,  
+			 asin,  
+			 item_description ,  
+			 item_manufacture_country,  
+			 qty ,  
+			 item_weight ,  
+			 total_activity_weight,  
+			 cost_price_of_items,  
+			 price_of_items_amt_vat_excl ,  
+			 promo_price_of_items_amt_vat_excl,  
+			 total_price_of_items_amt_vat_excl,  
+			 ship_charge_amt_vat_excl ,  
+			 promo_ship_charge_amt_vat_excl ,  
+			 total_ship_charge_amt_vat_excl ,  
+			 gift_wrap_amt_vat_excl ,  
+			 promo_gift_wrap_amt_vat_excl ,  
+			 total_gift_wrap_amt_vat_excl,  
+			 total_activity_value_amt_vat_excl ,  
+			 price_of_items_vat_rate_percent,  
+			 price_of_items_vat_amt,  
+			 promo_price_of_items_vat_amt,  
+			 total_price_of_items_vat_amt ,  
+			 ship_charge_vat_rate_percent ,  
+			 ship_charge_vat_amt,  
+			 promo_ship_charge_vat_amt ,  
+			 total_ship_charge_vat_amt ,  
+			 gift_wrap_vat_rate_percent ,  
+			 gift_wrap_vat_amt,  
+			 promo_gift_wrap_vat_amt ,  
+			 total_gift_wrap_vat_amt ,  
+			 total_activity_value_vat_amt,  
+			 price_of_items_amt_vat_incl ,  
+			 promo_price_of_items_amt_vat_incl,  
+			 total_price_of_items_amt_vat_incl,  
+			 ship_charge_amt_vat_incl ,  
+			 promo_ship_charge_amt_vat_incl ,  
+			 total_ship_charge_amt_vat_incl,  
+			 gift_wrap_amt_vat_incl,  
+			 promo_gift_wrap_amt_vat_incl,  
+			 total_gift_wrap_amt_vat_incl ,  
+			 total_activity_value_amt_vat_incl,  
+			 transaction_currency_code,  
+			 commodity_code ,  
+			 statistical_code_depart ,  
+			 statistical_code_arrival,  
+			 commodity_code_supplementary_unit ,  
+			 item_qty_supplementary_unit  ,  
+			 total_activity_supplementary_unit ,  
+			 product_tax_code,  
+			 depature_city ,  
+			 departure_country ,  
+			 departure_post_code,  
+			 arrival_city ,  
+			 arrival_country ,  
+			 arrival_post_code ,  
+			 sale_depart_country ,  
+			 sale_arrival_country ,  
+			 transportation_mode ,  
+			 delivery_conditions ,  
+			 seller_depart_vat_number_country,  
+			 seller_depart_country_vat_number,  
+			 seller_arrival_vat_number_country,  
+			 seller_arrival_country_vat_number,  
+			 transaction_seller_vat_number_country,  
+			 transaction_seller_vat_number ,  
+			 buyer_vat_number_country,  
+			 buyer_vat_number,  
+			 vat_calculation_imputation_country,  
+			 taxable_jurisdiction,  
+			 taxable_jurisdiction_level,  
+			 vat_inv_number ,  
+			 vat_inv_converted_amt,  
+			 vat_inv_currency_code ,  
+			 vat_inv_exchange_rate ,  
+			 vat_inv_exchange_rate_date ,  
+			 export_outside_eu ,  
+			 invoice_url ,  
+			 buyer_name ,  
+			 arrival_address
+        )
+        VALUES
+        (
+       	    #{order.order_id,jdbcType=VARCHAR},
+	        #{order.user_id,jdbcType=VARCHAR},
+	        #{order.sheet_name,jdbcType=VARCHAR},
+	        #{order.unique_account_identifier,jdbcType=VARCHAR},  
+			#{order.activity_period,jdbcType=VARCHAR},  
+			#{order.sales_channel,jdbcType=VARCHAR},  
+			#{order.marketplace,jdbcType=VARCHAR},  
+			#{order.transaction_type,jdbcType=VARCHAR},  
+			#{order.transaction_event_id,jdbcType=VARCHAR},  
+			#{order.activity_transaction_id,jdbcType=VARCHAR},  
+			#{order.tax_calculation_date,jdbcType=VARCHAR},  
+			#{order.transaction_depart_date,jdbcType=VARCHAR},  
+			#{order.transaction_arrival_date,jdbcType=VARCHAR},  
+			#{order.transaction_complete_date,jdbcType=VARCHAR},  
+			#{order.seller_sku,jdbcType=VARCHAR},  
+			#{order.asin,jdbcType=VARCHAR},  
+			#{order.item_description,jdbcType=VARCHAR},  
+			#{order.item_manufacture_country,jdbcType=VARCHAR},  
+			#{order.qty,jdbcType=VARCHAR},  
+			#{order.item_weight,jdbcType=VARCHAR},  
+			#{order.total_activity_weight,jdbcType=VARCHAR},  
+			#{order.cost_price_of_items,jdbcType=VARCHAR},  
+			#{order.price_of_items_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.promo_price_of_items_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.total_price_of_items_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.ship_charge_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.promo_ship_charge_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.total_ship_charge_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.gift_wrap_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.promo_gift_wrap_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.total_gift_wrap_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.total_activity_value_amt_vat_excl,jdbcType=VARCHAR},  
+			#{order.price_of_items_vat_rate_percent,jdbcType=VARCHAR},  
+			#{order.price_of_items_vat_amt,jdbcType=VARCHAR},  
+			#{order.promo_price_of_items_vat_amt,jdbcType=VARCHAR},  
+			#{order.total_price_of_items_vat_amt,jdbcType=VARCHAR},  
+			#{order.ship_charge_vat_rate_percent,jdbcType=VARCHAR},  
+			#{order.ship_charge_vat_amt,jdbcType=VARCHAR},  
+			#{order.promo_ship_charge_vat_amt,jdbcType=VARCHAR},  
+			#{order.total_ship_charge_vat_amt,jdbcType=VARCHAR},  
+			#{order.gift_wrap_vat_rate_percent,jdbcType=VARCHAR},  
+			#{order.gift_wrap_vat_amt,jdbcType=VARCHAR},  
+			#{order.promo_gift_wrap_vat_amt,jdbcType=VARCHAR},  
+			#{order.total_gift_wrap_vat_amt,jdbcType=VARCHAR},  
+			#{order.total_activity_value_vat_amt,jdbcType=VARCHAR},  
+			#{order.price_of_items_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.promo_price_of_items_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.total_price_of_items_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.ship_charge_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.promo_ship_charge_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.total_ship_charge_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.gift_wrap_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.promo_gift_wrap_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.total_gift_wrap_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.total_activity_value_amt_vat_incl,jdbcType=VARCHAR},  
+			#{order.transaction_currency_code,jdbcType=VARCHAR},  
+			#{order.commodity_code,jdbcType=VARCHAR},  
+			#{order.statistical_code_depart,jdbcType=VARCHAR},  
+			#{order.statistical_code_arrival,jdbcType=VARCHAR},  
+			#{order.commodity_code_supplementary_unit,jdbcType=VARCHAR},  
+			#{order.item_qty_supplementary_unit,jdbcType=VARCHAR},  
+			#{order.total_activity_supplementary_unit,jdbcType=VARCHAR},  
+			#{order.product_tax_code,jdbcType=VARCHAR},  
+			#{order.depature_city,jdbcType=VARCHAR},  
+			#{order.departure_country,jdbcType=VARCHAR},  
+			#{order.departure_post_code,jdbcType=VARCHAR},  
+			#{order.arrival_city,jdbcType=VARCHAR},  
+			#{order.arrival_country,jdbcType=VARCHAR},  
+			#{order.arrival_post_code,jdbcType=VARCHAR},  
+			#{order.sale_depart_country,jdbcType=VARCHAR},  
+			#{order.sale_arrival_country,jdbcType=VARCHAR},  
+			#{order.transportation_mode,jdbcType=VARCHAR},  
+			#{order.delivery_conditions,jdbcType=VARCHAR},  
+			#{order.seller_depart_vat_number_country,jdbcType=VARCHAR},  
+			#{order.seller_depart_country_vat_number,jdbcType=VARCHAR},  
+			#{order.seller_arrival_vat_number_country,jdbcType=VARCHAR},  
+			#{order.seller_arrival_country_vat_number,jdbcType=VARCHAR},  
+			#{order.transaction_seller_vat_number_country,jdbcType=VARCHAR},  
+			#{order.transaction_seller_vat_number,jdbcType=VARCHAR},  
+			#{order.buyer_vat_number_country,jdbcType=VARCHAR},  
+			#{order.buyer_vat_number,jdbcType=VARCHAR},  
+			#{order.vat_calculation_imputation_country,jdbcType=VARCHAR},  
+			#{order.taxable_jurisdiction,jdbcType=VARCHAR},  
+			#{order.taxable_jurisdiction_level,jdbcType=VARCHAR},  
+			#{order.vat_inv_number,jdbcType=VARCHAR},  
+			#{order.vat_inv_converted_amt,jdbcType=VARCHAR},  
+			#{order.vat_inv_currency_code,jdbcType=VARCHAR},  
+			#{order.vat_inv_exchange_rate,jdbcType=VARCHAR},  
+			#{order.vat_inv_exchange_rate_date,jdbcType=VARCHAR},  
+			#{order.export_outside_eu,jdbcType=VARCHAR},  
+			#{order.invoice_url,jdbcType=VARCHAR},  
+			#{order.buyer_name,jdbcType=VARCHAR},  
+			#{order.arrival_address,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    <delete id="deleteOrder" parameterType="string">
+        	DELETE FROM order_header WHERE user_id=#{userId}
+    </delete>
+    
+	  <select id="sumATypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount FROM order_header t 
+		    WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.sale_arrival_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.sale_depart_country is not null
+			AND t.sale_depart_country IN(select c.country_code FROM tax_no_country c)
+			GROUP BY  t.transaction_currency_code
+	    </select>
+	    
+	    <select id="sumBTypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount from order_header t 
+		    WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.sale_depart_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.sale_arrival_country NOT IN(select t.country_code from user_country t where t.user_id=#{userId,jdbcType=VARCHAR}) 
+			AND t.sale_arrival_country IN(select c.country_code from tax_no_country c)
+			group by  t.transaction_currency_code
+	    </select>
+	    
+	    
+	    <select id="sumCTypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount from order_header t 
+		    WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.sale_depart_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.sale_arrival_country IN(select c.country_code from tax_no_country c)
+			group by  t.transaction_currency_code
+	    </select>
+	    
+</mapper>

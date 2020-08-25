@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>增值税计算系统</title>
+<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <link rel="stylesheet" href="${request.contextPath}/assets/css/bootstrap.css"  />
+<script  type="text/javascript"  src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+<script  type="text/javascript"  src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript"   src="${request.contextPath}/assets/js/self/dialog.js"></script>
+<style>
+        body{
+            background-color: #C7EDCC;
+            font-family: "microsoft yahei";
+        }
+        img{
+            width: 100%;
+        }
+        #myppt{
+            margin-top: -20px;
+        }
+    </style>
+</head>
+<body>
+
+	 <div class="col-lg-8 col-lg-offset-2" id="login" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <h1 class="text-center">系统管理员登录-手机验证</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" action="${request.contextPath}/system/checkSmsCode.do" method="post">
+                            <div class="form-group">
+                                <label for="">手机验证</label>
+                                <input class="form-control" type="text" name="smsCode"  placeholder="请输入验证码">
+                            </div>
+                            <div class="text-right">
+                             	<button class="btn btn-primary" type="button" id="mobileSend" >发送手机验证码</button>
+                             	<button class="btn btn-primary" type="submit">验证</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+	    $("#mobileSend").click(function(){
+	        $.post("${request.contextPath}/system/sendSmsCheckCode.do",
+	        {           
+	        },
+	        function(result){
+	            $.MsgBox.Alert("消息", "验证码发送成功，请注意查收!'");
+	        });
+	    });
+    });
+    
+    </script>
+	
+</body>
+</html>

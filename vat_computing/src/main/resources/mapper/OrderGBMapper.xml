@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.OrderGBMapper">  
+
+	<select id="findActivityPeriod" parameterType="string" resultType="com.vat.bean.GBOrder">
+        SELECT DISTINCT activity_period FROM gb_order_header t WHERE t.gb_user_id= #{userId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findSaleDepartCountry" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT t.sale_depart_country FROM gb_order_header t 
+        WHERE t.gb_user_id= #{userId,jdbcType=VARCHAR} 
+           AND t.sale_depart_country is not null
+    </select>
+    
+      <select id="findsaleArrivalCountry" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT t.arrival_country FROM gb_order_header t 
+        WHERE t.gb_user_id= #{userId,jdbcType=VARCHAR}
+        	AND t.sale_depart_country is not null
+    </select>
+    
+   <select id="findOrderByPage" parameterType="com.vat.bean.GBOrder" resultType="com.vat.bean.GBOrder">
+        SELECT * FROM gb_order_header t 
+        WHERE t.gb_user_id= #{order.user_id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteOrder" parameterType="string">
+        	DELETE FROM gb_order_header WHERE gb_user_id=#{userId}
+    </delete>
+    
+	  <select id="sumATypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount FROM gb_order_header t 
+		    WHERE t.gb_user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.arrival_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.sale_depart_country is not null
+			AND t.sale_depart_country IN(select c.country_code FROM tax_no_country c)
+			GROUP BY  t.transaction_currency_code
+	    </select>
+	    
+	    <select id="sumBTypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount from gb_order_header t 
+		    WHERE t.gb_user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.sale_depart_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.arrival_country NOT IN(select t.country_code from user_country t where t.user_id=#{userId,jdbcType=VARCHAR}) 
+			AND t.arrival_country IN(select c.country_code from tax_no_country c)
+			group by  t.transaction_currency_code
+	    </select>
+	    
+	     <select id="sumCTypeVatAmountBycurrency" parameterType="java.util.Map" resultType="java.util.Map">   
+		  SELECT t.transaction_currency_code AS currencyCode,sum(t.total_activity_value_amt_vat_incl) AS vatAmount from gb_order_header t 
+		    WHERE t.gb_user_id=#{userId,jdbcType=VARCHAR} 
+			AND t.transaction_currency_code is not null 
+			AND t.activity_period =#{activityPeriod,jdbcType=VARCHAR}
+			AND t.sale_depart_country=#{needComputingCountry,jdbcType=VARCHAR} 
+			AND t.arrival_country IN(select c.country_code from tax_no_country c)
+			group by  t.transaction_currency_code
+	    </select>
+	    
+</mapper>

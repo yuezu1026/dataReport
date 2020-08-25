@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="com.vat.mapper.SystemConfigMapper">
+
+		<resultMap id="systemConfigMapping" type="com.vat.bean.SystemConfigVO">
+			<id column="sys_config_id" property="sysConfigId" javaType="String"/>
+		    <result column="config_code" property="configCode" javaType="String"/>
+		    <result column="config_desc" property="configDesc" javaType="String"/>
+		    <result column="config_value" property="configValue" javaType="String"/>
+		</resultMap>
+
+    <insert id = "insertSystemConfig" parameterType="com.vat.bean.SystemConfigVO">
+        INSERT INTO system_config(
+            sys_config_id,
+	        config_code,
+	        config_desc,
+	        config_value
+        )
+        VALUES
+        (
+	        #{systemConfigVO.sysConfigId,jdbcType=VARCHAR},
+	        #{systemConfigVO.configCode,jdbcType=VARCHAR},
+	        #{systemConfigVO.configDesc,jdbcType=VARCHAR},
+	        #{systemConfigVO.configValue,jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <update id="updateSystemConfig" parameterType="com.vat.bean.SystemConfigVO">
+     	UPDATE system_config SET 
+     	config_value= #{paramConfigVO.configValue,jdbcType=VARCHAR}
+     	 WHERE sys_config_id=#{systemConfigVO.sysConfigId,jdbcType=VARCHAR}
+    </update>
+    
+     <select id="findSystemConfigByCode" parameterType="com.vat.bean.SystemConfigVO" resultMap="systemConfigMapping">
+        SELECT
+        	sys_config_id,
+	        config_code,
+	        config_desc,
+	        config_value
+        FROM system_config WHERE config_code=#{systemConfigVO.configCode,jdbcType=VARCHAR}
+    </select>
+    
+    
+    <select id="findSystemConfigById" parameterType="com.vat.bean.SystemConfigVO" resultMap="systemConfigMapping">
+        SELECT
+        	sys_config_id,
+	        config_code,
+	        config_desc,
+	        config_value
+        FROM system_config WHERE sys_config_id=#{systemConfigVO.sysConfigId,jdbcType=VARCHAR}
+    </select>
+    
+</mapper>

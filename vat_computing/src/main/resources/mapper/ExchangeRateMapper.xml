@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.ExchangeRateMapper">  
+
+		<resultMap id="countryMapping" type="com.vat.bean.ExchangeRateVO">
+		    <result column="period" property="period" javaType="String"/>
+		    <result column="from_currency_code" property="fromCurrencyCode"  javaType="String"/>
+		    <result column="to_currency_code" property="toCurrencyCode"  javaType="String"/>
+		    <result column="rate" property="rate"  javaType="String"/>
+		</resultMap>
+      
+       <select id="findExchangeRate"  parameterType="string" resultMap="countryMapping">
+        	SELECT t.period,t.from_currency_code,t.to_currency_code,t.rate  
+        	FROM exchange_rate t
+        	WHERE t.period=#{period,jdbcType=VARCHAR} 
+      </select>
+
+</mapper>

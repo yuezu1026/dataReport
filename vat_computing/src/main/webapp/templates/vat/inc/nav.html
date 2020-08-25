@@ -1,0 +1,40 @@
+<ul class="nav" id="main-menu">
+                    <li>
+                    <#if activeClass?? && activeClass ='index'>
+                        <a class="active-menu" href="${request.contextPath}/vat/index.do"><i class="fa fa-dashboard"></i>计算说明</a>
+                     <#else>
+                      	<a href="${request.contextPath}/vat/index.do"><i class="fa fa-dashboard"></i>计算说明</a>
+                     </#if>
+                    </li>
+                    
+                    <li>
+                       <#if activeClass?? && activeClass ='config'>
+                        <a class="active-menu"  href="${request.contextPath}/vat/config.do"><i class="fa fa-edit"></i>参数配置</a>
+                     <#else>
+                      	 <a href="${request.contextPath}/vat/config.do"><i class="fa fa-edit"></i>参数配置</a>
+                     </#if>
+                    </li>
+                    
+                    <li>
+                       <#if activeClass?? && activeClass ='import_data'>
+                        <a class="active-menu"  href="${request.contextPath}/vat/import_data.do"><i class="fa fa-fw fa-file"></i>数据导入</a>
+                     <#else>
+                      	 <a href="${request.contextPath}/vat/import_data.do"><i class="fa fa-fw fa-file"></i>数据导入</a>
+                     </#if>
+                    </li>
+                    
+                    <li>
+                    <#if activeClass?? && activeClass ='computing'>
+                        <a class="active-menu" href="${request.contextPath}/vat/computing.do"><i class="fa fa-desktop"></i>数据计算</a>
+                     <#else>
+                      	 <a href="${request.contextPath}/vat/computing.do"><i class="fa fa-desktop"></i>数据计算</a>
+                     </#if>
+                    </li>
+                    <li>
+                    <#if activeClass?? && activeClass ='result'>
+                        <a class="active-menu"   href="${request.contextPath}/vat/result.do"><i class="fa fa-table"></i>计算结果</a>
+                     <#else>
+                      	 <a  href="${request.contextPath}/vat/result.do"><i class="fa fa-table"></i>计算结果</a>
+                     </#if>
+                    </li>
+</ul>

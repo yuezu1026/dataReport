@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增值税计算系统</title>
+    <link href="${request.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="${request.contextPath}/assets/css/custom-styles.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> 
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand"><em class="fa fa-gear"></em> 增值税计算系统</a></div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="${request.contextPath}/system/clearUserLogin.do"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav"><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a  href="${request.contextPath}/system/index.do"><i class="fa fa-dashboard"></i>系统管理首页</a>
+                    </li>
+                     <li>
+                        <a  class="active-menu"  href="${request.contextPath}/system/user.do"><i class="fa fa-dashboard"></i>用户管理</a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            <small> 用户管理</small>
+                        </h1>
+                    </div>
+                </div>
+				
+				<div class="row">
+                <div class="col-md-12">
+                  <!--   Kitchen Sink -->
+                    <div class="panel panel-default">
+                      
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                        	<th>用户ID</th>
+                                            <th>用户账号</th>
+                                            <th>电话</th>
+                                            <th>邮箱</th>
+                                            <th>公司名</th>
+                                            <th>审核</th>
+                                            <th>服务开始时间</th>
+                                            <th>服务结束时间</th>
+                                            <th>注册时间</th>
+                                            <th>登陆次数</th>
+                                             <th>使用次数</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <#list userList! as item> 
+									          	 <tr>
+									          	 	<td>${item.userId!}</td>
+		                                            <td>${item.username!}</td>
+		                                            <td>${item.telphone!}</td>
+		                                            <td>${item.email!}</td>
+		                                            <td>${item.companyName!}</td>
+		                                            <td><a href="${request.contextPath}/system/userReview.do?userId=${item.userId!}">${item.passFlag!}</a></td>
+		                                            <td>${item.startServiceDate!}</td>
+		                                            <td>${item.endServiceDate!}</td>
+		                                            <td>${item.createDate!}</td>
+		                                            <td>${item.loginTimes!}</td>
+		                                            <td>${item.useTimes!}</td>
+		                                        </tr>
+									</#list>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                     
+                        <div class="col-md-12">
+                            <ul class="pagination pull-right">
+                            <#if currentPage?? && currentPage lte 1>
+                                <li class="disabled"><a href="#">上一页</a></li>
+                            <#else>
+                                <li><a href="${request.contextPath}/system/user.do?page=${currentPage - 1}&size=${size!}">上一页</a></li>
+                            </#if>
+ 
+                            <#if (totalPages?? && totalPages > 0)>
+	                            <#if currentPage == 1>
+	                              	<li class="disabled"><a href="${request.contextPath}/system/user.do?page=1&size=${size}" >1</a></li>
+	                             <#else>
+	                                <li><a href="${request.contextPath}/system/user.do?page=1&size=${size}" >1</a></li>
+	                            </#if>
+ 							</#if>
+                            <#if (totalPages?? && totalPages > 1)>
+                                <#if ((currentPage - 3) > 2)>
+                                    <li><span class="text">…</span></li>
+                                </#if>
+ 
+                                <#list (currentPage - 3)..(currentPage + 3) as index>
+                                    <#if (index > 1) && (index < totalPages)>
+                                    	<#if currentPage == index>
+                                       		 	<li class="disabled"><a href="${request.contextPath}/system/user.do?page=${index}&size=${size}" >${index}</a></li>
+                                         <#else>
+                                       	  		<li><a href="${request.contextPath}/system/user.do?page=${index}&size=${size}" >${index}</a></li>
+                                          </#if> 
+                                    </#if>
+                                </#list>
+                                
+                                <#if (currentPage + 3) lt (totalPages - 1)>
+                                    <li><span class="text">…</span></li>
+                                </#if>
+ 
+							  <#if currentPage == totalPages>
+							  		<li  class="disabled"><a href="${request.contextPath}/system/user.do?page=${totalPages}&size=${size}" >${totalPages}</a></li>
+							  <#else>
+                                	<li><a href="${request.contextPath}/system/user.do?page=${totalPages}&size=${size}" >${totalPages}</a></li>
+                                 </#if>
+                            </#if>
+ 
+                            <#if currentPage??  && currentPage gte totalPages>
+                                <li class="disabled"><a href="#">下一页</a></li>
+                            <#else>
+                                <li><a href="${request.contextPath}/system/user.do?page=${currentPage + 1}&size=${size!}">下一页</a></li>
+                            </#if>
+                            </ul>
+                        </div>
+				</div> 
+            </div>
+        </div>
+    </div>
+    <script src="${request.contextPath}/assets/js/jquery-1.10.2.js"></script>
+    <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+    <script src="${request.contextPath}/assets/js/custom-scripts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.ModuleMapper">
+
+		<resultMap id="moduleMapping" type="com.vat.bean.ModuleInfo">
+		    <id column="id" property="id" javaType="Integer"/>
+		    <result column="module_name" property="moduleName" javaType="String"/>
+		    <result column="module_path" property="modulePath"  javaType="String"/>
+		    <result column="module_type" property="moduleType"  javaType="Integer"/>
+		    <result column="module_key" property="moduleKey"  javaType="String"/>
+		</resultMap>
+    
+    <select id="findModuleByUserId" parameterType="string" resultMap="moduleMapping">
+		select e.id,
+			e.module_name,
+			e.module_path,
+			e.module_type,
+			e.module_key 
+		from t_user_role b left join t_role c 
+		on b.role_id=c.id left join t_role_module d 
+		on c.id=d.role_id left join t_module e 
+		on d.module_id=e.id 
+		where b.user_id=#{userId,jdbcType=VARCHAR}
+    </select>
+    
+</mapper>

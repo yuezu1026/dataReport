@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.SystemUserMapper">  
+
+    <insert id = "insertSystemUser" parameterType="com.vat.bean.SystemUser">
+        INSERT INTO system_user(
+	        user_id,
+	        username,
+	        password,
+	        telphone
+        )
+        VALUES
+        (
+	        #{user.systemUserId,jdbcType=VARCHAR},
+	        #{user.username,jdbcType=VARCHAR},
+	        #{user.password,jdbcType=VARCHAR},
+	        #{user.telphone,jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <select id="findSystemUserPassword" parameterType="com.vat.bean.SystemUser" resultType="com.vat.bean.SystemUser">
+        SELECT system_user_id AS systemUserId,
+        	username,
+        	password,
+        	telphone
+        FROM system_user 
+        WHERE username=#{username,jdbcType=VARCHAR} 
+        AND password=#{password,jdbcType=VARCHAR}
+    </select>
+    
+     <select id="findSystemUser" parameterType="com.vat.bean.SystemUser" resultType="com.vat.bean.SystemUser">
+        SELECT system_user_id AS systemUserId,telphone
+        FROM system_user 
+        WHERE username=#{username,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

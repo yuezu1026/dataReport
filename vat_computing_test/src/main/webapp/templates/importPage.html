@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<#if Session.user?exists>  
+
+ 用户Session userId  ${Session.user.id}   
+
+  </#if> 
+  <br/>
+
+user: ${user}
+
+
+  <form id="file_form" action="importExcel" enctype="multipart/form-data"
+        method="post">
+        <input type="file" name="file" id="file_input" /> 
+        <input type="submit" value="文件上传" id='upFile-btn'>
+    </form>
+
+</body>
+</html>

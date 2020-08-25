@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.MiddleResultMapper">  
+
+		<resultMap id="middleResultMapping" type="com.vat.bean.ComputingMiddleResultVO">
+		    <id column="computing_id" property="computingId" javaType="String"/>
+		    <result column="user_id" property="userId" javaType="String"/>
+		    <result column="data_type" property="dataType" javaType="String"/>
+		    <result column="period" property="period"  javaType="String"/>
+		    <result column="need_computing_country" property="needComputingCountry"  javaType="String"/>
+		    <result column="computing_type" property="computingType"  javaType="String"/>
+		    <result column="currency_code" property="currencyCode"  javaType="String"/>
+		    <result column="amount" property="amount"  javaType="String"/>
+		    <result column="create_date" property="createDate"  javaType="String"/>
+		</resultMap>
+    
+    	<select id="findMiddleResultList" parameterType="string" resultMap="middleResultMapping">   
+		    SELECT 
+			    t.computing_id,
+			    t.user_id,
+			    t.data_type,
+			    t.period,
+			    t.need_computing_country,
+			    t.computing_type,
+			    t.currency_code,
+			    t.amount,
+			    t.create_date
+		    FROM vat_computing_middle_result t 
+		     WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+		     AND t.data_type=#{dataType,jdbcType=VARCHAR}
+		    AND t.need_computing_country=#{needComputingCountry,jdbcType=VARCHAR}
+		    AND t.period=#{period,jdbcType=VARCHAR}
+		    AND t.data_type=#{dataType,jdbcType=VARCHAR}
+		</select>    
+	
+	<insert id="saveComputingMiddleResult" parameterType="java.util.Map">
+	    	 INSERT INTO vat_computing_middle_result
+		    (
+		   		computing_id,
+		    	user_id,
+		    	data_type,
+		    	period,
+		    	need_computing_country,
+		    	computing_type,
+		    	currency_code,
+		    	amount
+		    )
+		    VALUES
+		    (
+		    	#{computingId,jdbcType=VARCHAR},
+		    	#{userId,jdbcType=VARCHAR},
+		    	#{dataType,jdbcType=VARCHAR},
+		    	#{period,jdbcType=VARCHAR},
+		    	#{needComputingCountry,jdbcType=VARCHAR},
+		    	#{computingType,jdbcType=VARCHAR},
+		    	#{currencyCode,jdbcType=VARCHAR},
+		    	#{amount,jdbcType=VARCHAR}
+		    )
+		    
+	    </insert>
+	    
+	    <delete id="deleteComputingMiddleResult" parameterType="string">
+        	DELETE FROM vat_computing_middle_result 
+        	WHERE 
+        	user_id=#{userId,jdbcType=VARCHAR} 
+        	AND data_type=#{dataType,jdbcType=VARCHAR} 
+        	AND period=#{period,jdbcType=VARCHAR} 
+        	AND need_computing_country=#{needComputingCountry,jdbcType=VARCHAR}
+    	</delete>
+    
+	    <select id="findMiddleTotalAmountResultList" parameterType="string" resultType="java.util.Map">   
+		    SELECT t.currency_code,sum(t.amount) total_amount 
+		    FROM vat_computing_middle_result t 
+		     WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+		     AND t.data_type=#{dataType,jdbcType=VARCHAR} 
+		    AND t.period=#{period,jdbcType=VARCHAR} 
+		    AND t.need_computing_country=#{needComputingCountry,jdbcType=VARCHAR}
+			GROUP BY t.currency_code
+		</select>    
+
+</mapper>

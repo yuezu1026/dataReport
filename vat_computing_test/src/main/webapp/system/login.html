@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>增值税计算系统</title>
+<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <link rel="stylesheet" href="/assets/css/bootstrap.css"  />
+<script  type="text/javascript"  src="/assets/js/jquery-1.10.2.js"></script>
+<script  type="text/javascript"  src="/assets/js/bootstrap.min.js"></script>
+<style>
+        body{
+            background-color: #C7EDCC;
+            font-family: "microsoft yahei";
+            /*min-width: 800px;*/
+        }
+        img{
+            width: 100%;
+        }
+        #myppt{
+            margin-top: -20px;
+        }
+    </style>
+</head>
+<body>
+	 <div class="col-lg-8 col-lg-offset-2" id="login" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <h1 class="text-center">系统管理员登录</h1>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" action="/system/login.do" method="post">
+                            <div class="form-group">
+                                <label for="">用户名</label>
+                                <input class="form-control" type="text"  name="username" placeholder="请输入管理员账号">
+                            </div>
+                            <div class="form-group">
+                                <label for="">密码</label>
+                                <input class="form-control" type="password" name="password"  placeholder="请输入管理员密码">
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-primary" type="submit">登录</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

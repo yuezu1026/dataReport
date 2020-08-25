@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.PdfResultMapper">  
+    
+     <select id="findPDFResultByPage" parameterType="com.vat.bean.PDFReportVO" resultType="com.vat.bean.PDFReportVO">
+        SELECT t.pdf_id AS pdfId,
+        	t.user_id AS userId,
+        	t.data_type AS dataType,
+        	t.report_no AS reportNo,
+        	t.need_computing_country AS needComputingCountry,
+        	t.create_date AS createDate
+         FROM vat_pdf_result t 
+        WHERE t.user_id= #{pdfReport.userId,jdbcType=VARCHAR}
+        AND t.data_type= #{pdfReport.dataType,jdbcType=VARCHAR}
+        ORDER BY t.create_date DESC
+    </select>
+    
+    <select id="findPDFResultById" parameterType="string" resultType="com.vat.bean.PDFReportVO">
+        SELECT t.pdf_id AS pdfId,
+        	t.user_id AS userId,
+        	t.data_type AS dataType,
+        	t.report_no AS reportNo,
+        	t.need_computing_country AS needComputingCountry,
+        	t.file_path AS filePath,
+        	t.create_date AS createDate
+         FROM vat_pdf_result t 
+        WHERE 
+        t.pdf_id= #{pdfId,jdbcType=VARCHAR}
+        AND t.user_id= #{userId,jdbcType=VARCHAR}
+    </select>
+	    
+    <insert id="savePDFResult" parameterType="com.vat.bean.PDFReportVO">
+    	 INSERT INTO vat_pdf_result
+	    (
+	    	user_id,
+	    	data_type,
+	    	report_no,
+	    	need_computing_country,
+	    	file_path
+	    )
+	    VALUES
+	    (
+	    	#{pdfReportVO.userId,jdbcType=VARCHAR},
+	    	#{pdfReportVO.dataType,jdbcType=VARCHAR},
+	    	#{pdfReportVO.reportNo,jdbcType=VARCHAR},
+	    	#{pdfReportVO.needComputingCountry,jdbcType=VARCHAR},
+	    	#{pdfReportVO.filePath,jdbcType=VARCHAR}
+	    )
+    </insert>
+	    
+</mapper>

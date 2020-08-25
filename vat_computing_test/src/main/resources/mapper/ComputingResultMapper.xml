@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.ComputingResultMapper">  
+	    
+	    <insert id="saveComputingResult" parameterType="com.vat.bean.ComputingResultVO">
+	    	 INSERT INTO vat_computing_result
+		    (
+		   		result_id,
+		    	user_id,
+		    	data_type,
+		    	period,
+		    	need_computing_country,
+		    	currency_code,
+		    	including_tax_amount,
+		    	excluding_tax_amount,
+		    	vat_amount,
+		    	period_date
+		    )
+		    VALUES
+		    (
+		    	#{computingResultVO.resultId,jdbcType=VARCHAR},
+		    	#{computingResultVO.userId,jdbcType=VARCHAR},
+		    	#{computingResultVO.dataType,jdbcType=VARCHAR},
+		    	#{computingResultVO.period,jdbcType=VARCHAR},
+		    	#{computingResultVO.needComputingCountry,jdbcType=VARCHAR},
+		    	#{computingResultVO.currencyCode,jdbcType=VARCHAR},
+		    	#{computingResultVO.includingTaxAmount,jdbcType=VARCHAR},
+		    	#{computingResultVO.excludingTaxAmount,jdbcType=VARCHAR},
+		    	#{computingResultVO.vatAmount,jdbcType=VARCHAR},
+		    	#{computingResultVO.periodDate,jdbcType=VARCHAR}
+		    )
+		    
+	    </insert>
+	    
+	   <delete id="deleteComputingResult" parameterType="string">
+        	DELETE FROM vat_computing_result 
+        	WHERE 
+        	user_id=#{userId,jdbcType=VARCHAR} 
+        	AND period=#{period,jdbcType=VARCHAR} 
+        	AND need_computing_country=#{needComputingCountry,jdbcType=VARCHAR}
+        	AND data_type=#{dataType,jdbcType=VARCHAR}
+    	</delete>  
+    
+    	<select id="findComputingResult" parameterType="string" resultType="com.vat.bean.ComputingResultVO">   
+     		SELECT 
+	     		t.result_id AS resultId, 
+	     		t.user_id AS userId,
+	     		t.data_type AS dataType,
+	     		t2.username AS userAccount,
+	     		t.period, 
+	     		t.need_computing_country AS needComputingCountryCode,
+	     		country.country_name AS needComputingCountry,
+	     		t.currency_code AS currencyCode,
+	     		t.including_tax_amount AS includingTaxAmount,
+	     		t.excluding_tax_amount AS excludingTaxAmount,
+	     		t.vat_amount AS vatAmount,
+	     		t.create_date AS createDate
+     		FROM vat_computing_result t LEFT JOIN user t2 
+     					ON t.user_id = t2.user_id
+     				  LEFT JOIN tax_no_country country 
+     				    ON country.country_code = t.need_computing_country
+     		   WHERE t.user_id=#{userId,jdbcType=VARCHAR} 
+     		      AND t.need_computing_country=#{needComputingCountry,jdbcType=VARCHAR}
+     		      AND t.period=#{period,jdbcType=VARCHAR}
+     		      AND t.data_type=#{dataType,jdbcType=VARCHAR}
+     		   ORDER BY t.period_date ASC
+	   </select>
+	   
+	    
+	    
+</mapper>

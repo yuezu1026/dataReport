@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.UserCountryMapper">  
+    
+    <insert id="saveUserCountry" parameterType="string">
+    INSERT INTO user_country
+    (
+    	user_id,
+    	country_code,
+    	country_name,
+    	tax_flag
+    )
+    VALUES
+    (
+    	#{userId,jdbcType=VARCHAR},
+    	#{countryCode,jdbcType=VARCHAR},
+    	#{countryName,jdbcType=VARCHAR},
+    	#{taxFlag,jdbcType=VARCHAR}
+    )
+    </insert>
+    
+    <delete id="deleteUserCountry" parameterType="string">
+        	DELETE FROM user_country WHERE user_id=#{userId}
+    </delete>
+      
+       <select id="findUserTaxCountry" parameterType="string" resultType="java.util.Map">
+        	SELECT t.country_code,t.country_name  FROM user_country t WHERE t.user_id=#{userId}
+      </select>
+	    
+</mapper>

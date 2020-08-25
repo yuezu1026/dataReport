@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.vat.mapper.OrderEbayMapper">  
+
+   <select id="findOrderByPage" parameterType="com.vat.bean.EbayOrder" resultType="com.vat.bean.EbayOrder">
+        SELECT * FROM ebay_order_header t 
+        WHERE t.ebay_user_id= #{order.user_id,jdbcType=VARCHAR}
+    </select>
+   
+    
+    <delete id="deleteOrder" parameterType="string">
+        	DELETE FROM ebay_order_header WHERE ebay_user_id=#{userId}
+    </delete>
+
+		    
+</mapper>

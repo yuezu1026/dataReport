@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>增值税计算</title>
+</head>
+<body>
+<#if Session.user?exists>  
+ 用户会话:Session userId  ${Session.user.id}   
+ </#if> 
+  <br/>
+  <br/>
+ <form id="file_form" action="/vatComputing"  method="post">
+ 
+ 1. 请选择有税号的国家：  <br/> 
+ 		<#list taxNoCountryList as item> 
+ 			<#if item.flag?exists && item.flag="Y">
+          		<input type="checkbox" name="taxNoCountry"  value="${item.countryCode}" checked="checked"/>${item.countryName}(${item.countryCode})
+          	 <#else> 
+          	     <input type="checkbox" name="taxNoCountry"  value="${item.countryCode}" />${item.countryName}(${item.countryCode})
+          	</#if>
+        </#list>
+        <br/>
+ 
+ 2. 请选择销售周期：  <br/> 
+ 		<#list activityPeriodList as item> 
+          	<input type="checkbox" name="period"  value="${item.activityPeriod}"/>${item.activityPeriod}
+        </#list>
+        <br/>
+ 3. 请选择需要计算的国家：<br/>
+ 	<#list taxNoCountryList as item>
+          	<input type="radio" name="needComputingCountry"  value="${item.countryCode}" />${item.countryName}(${item.countryCode})
+    </#list>
+    <br/> 
+ 
+ <br/>
+ <br/>
+ <br/>
+ <input type="submit" value="计算增值税" id='upFile-btn'>
+  </form>
+</body>
+</html>

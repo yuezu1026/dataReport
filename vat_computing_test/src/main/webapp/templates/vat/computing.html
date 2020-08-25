@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增值税计算系统</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="/assets/css/custom-styles.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     <link href="/assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" /> 
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/vat/index.do"><em class="fa fa-gear"></em> 增值税计算系统</a></div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="/user/clearUserLogin.do"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a href="/vat/index.do"><i class="fa fa-dashboard"></i>计算说明</a>
+                    </li>
+                    <li>
+                        <a  href="/vat/import_data.do"><i class="fa fa-fw fa-file"></i>数据导入</a>
+                    </li>
+                    <li>
+                        <a class="active-menu"  href="/vat/computing.do"><i class="fa fa-fw fa-file"></i>数据计算</a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/vat/result.do"><i class="fa fa-fw fa-file"></i>计算结果</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            增值税计算 
+                        </h1>
+                    </div>
+                </div>
+				
+				<div class="row">
+				
+				 <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            订单数据 <small>计算</small>
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+               
+            <div class="row">
+                <div class="col-lg-10">
+                
+                <div class="panel panel-default">
+                
+                        <div class="panel-heading">
+                           
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                </div>
+                                <div class="panel-body">
+		                            <ul class="nav nav-tabs">
+		                                <li class="active"><a href="#home" data-toggle="tab">亚马逊</a>
+		                                </li>
+		                                <li class=""><a href="#profile" data-toggle="tab">易贝</a>
+		                                </li>
+		                                <li class=""><a href="#messages" data-toggle="tab">GB</a>
+		                                </li>
+		                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="home">
+                                    <p></p>
+                                    <form  id="file_form" action="/vatComputing.do"  method="post">
+                                    <input type="hidden" name="dataType" value="Amazon"/>
+                                    <div class="form-group">
+                                            <label>1.当前可以计算的批次</label>
+									        <div class="alert alert-success">
+												<#if amazonMap?? && amazonMap.currentBatch?exists && amazonMap.currentBatch.isFinished ='Y'>
+		                                               <strong>Excel文件名: ${amazonMap.currentBatch.excelName}， 导入完成时间:${amazonMap.currentBatch.endDate} ，成功导入数据:${amazonMap.currentBatch.importCount}条，可以进行计算。</strong> 
+									          	 <#elseif amazonMap?? && amazonMap.currentBatch?exists && amazonMap.currentBatch.isFinished ='N'> 
+									          		 <strong>数据正在导入中，请稍后...</strong>
+									              <#else>
+									               <strong>没有可以计算的数据，请导入</strong>
+									          	 </#if>
+											</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>2.请选择有税号的国家</label>
+                                            <div>
+                                            <#list amazonMap.taxNoCountryList as item> 
+									 			<#if item.flag?exists && item.flag="Y">
+		                                                <label class="checkbox-inline">
+		                                                    <input type="checkbox" name="taxNoCountry" value="${item.countryCode}"" checked="checked"/>${item.countryName}(${item.countryCode})
+		                                                </label>
+									          	 <#else> 
+			                                                <label class="checkbox-inline">
+			                                                    <input type="checkbox" name="taxNoCountry" value="${item.countryCode}""/>${item.countryName}(${item.countryCode})
+			                                                </label>
+									          	</#if>
+									        </#list>
+									        </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">3.请选择销售周期</label>
+                                            <div>
+                                            <label for="name2"> <input type="checkbox" name="checkperiodAll" id="checkperiodAll_amazon" onclick="checkAll();"/> 全选</label>
+                                            </div>
+                                            <div id="period_amazon">
+                                            <#list amazonMap.activityPeriodList as item> 
+	                                                <label class="checkbox-inline">
+	                                                    <input type="checkbox" name="period" value="${item.activityPeriod}""/>${item.activityPeriod}
+	                                                </label>
+									        </#list>
+									        </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>4. 请选择需要计算的国家</label>
+                                            <#list  amazonMap.taxNoCountryList as item>
+											    <div class="radio">
+		                                                <label>
+		                                                    <input type="radio" name="needComputingCountry"  value="${item.countryCode}"/>${item.countryName}(${item.countryCode})
+		                                                </label>
+		                                        </div>
+									    </#list>
+                                        </div>
+                                         <div class="form-group">
+	                        				<div class="col-lg-9 col-lg-offset-4">
+	                        				<#if amazonMap?? && amazonMap.currentBatch?exists && amazonMap.currentBatch.isFinished ='Y'>
+	                            				<button type="submit" class="btn btn-primary"  onclick="return check(this.form);">计算增值税</button>
+	                            		     <#else> 
+									          		 <button type="submit" class="btn btn-primary"  onclick="return check(this.form);" disabled>计算增值税</button>
+									         </#if>
+	 										 <button type="reset" class="btn btn-default">重置</button>
+	                        				</div>
+                                          </div>                                 
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <p>todo</p>
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+                                    <p></p>
+                                    <form  id="file_form2" action="/vatComputing.do"  method="post">
+                                      <input type="hidden" name="dataType" value="GB"/>
+                                    <div class="form-group">
+                                            <label>1.当前可以计算的批次</label>
+									        <div class="alert alert-success">
+												<#if gbMap.currentBatch?exists && gbMap.currentBatch.isFinished ='Y'>
+		                                               <strong>Excel文件名: ${gbMap.currentBatch.excelName}， 导入完成时间:${gbMap.currentBatch.endDate} ，成功导入数据:${gbMap.currentBatch.importCount}条，可以进行计算。</strong> 
+									          	 <#elseif gbMap.currentBatch?exists && gbMap.currentBatch.isFinished ='N'> 
+									          		 <strong>数据正在导入中，请稍后...</strong>
+									              <#else>
+									               <strong>没有可以计算的数据，请导入</strong>
+									          	 </#if>
+											</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>2.请选择有税号的国家</label>
+                                            <div>
+                                            <#list gbMap.taxNoCountryList as item> 
+									 			<#if item.flag?exists && item.flag="Y">
+		                                                <label class="checkbox-inline">
+		                                                    <input type="checkbox" name="taxNoCountry" value="${item.countryCode}"" checked="checked"/>${item.countryName}(${item.countryCode})
+		                                                </label>
+									          	 <#else> 
+			                                                <label class="checkbox-inline">
+			                                                    <input type="checkbox" name="taxNoCountry" value="${item.countryCode}""/>${item.countryName}(${item.countryCode})
+			                                                </label>
+									          	</#if>
+									        </#list>
+									        </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">3.请选择销售周期</label>
+                                            <div>
+                                            <label for="name2"> <input type="checkbox" name="checkperiodAll"  id="checkperiodAll_gb"/> 全选</label>
+                                            </div>
+                                            <div id="period_gb">
+                                            <#list gbMap.activityPeriodList as item> 
+	                                                <label class="checkbox-inline">
+	                                                    <input type="checkbox" name="period" value="${item.activityPeriod}""/>${item.activityPeriod}
+	                                                </label>
+									        </#list>
+									        </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>4. 请选择需要计算的国家</label>
+                                            <#list gbMap.taxNoCountryList as item>
+											    <div class="radio">
+		                                                <label>
+		                                                    <input type="radio" name="needComputingCountry"  value="${item.countryCode}"/>${item.countryName}(${item.countryCode})
+		                                                </label>
+		                                        </div>
+									    </#list>
+                                        </div>
+                                         <div class="form-group">
+	                        				<div class="col-lg-9 col-lg-offset-4">
+	                        				<#if gbMap.currentBatch?exists && gbMap.currentBatch.isFinished ='Y'>
+	                            				<button type="submit" class="btn btn-primary"  onclick="return check(this.form);">计算增值税</button>
+	                            		     <#else> 
+									          		 <button type="submit" class="btn btn-primary"  onclick="return check(this.form);" disabled>计算增值税</button>
+									         </#if>
+	 										 <button type="reset" class="btn btn-default">重置</button>
+	                        				</div>
+                                          </div>                                 
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div> 
+   <footer>
+  		 <p>Copyright &copy; 2018.Company name All rights reserved. </p>
+	</footer>
+ </div>
+ </div>
+</div>
+    <script src="/assets/js/jquery-1.10.2.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script>
+    
+    $(document).ready(function() {
+	  //一键控制全选、反选、全不选
+	    $('#checkperiodAll_gb').change(function(){
+	      if($(this).is(':checked')){
+	         var box = $('#period_gb').find(':checkbox');
+	         if(box.length==box.filter(':not(:checked)').length){    // 复选框长度和没选中的个数一样 -> 全选 , .not(':checked').length 也可以。
+	         	$('#period_gb').find(':checkbox').prop('checked',true);
+	         }else{     // 如果有选中个数，-> 反选 
+	            	$('#period_gb').find(':checkbox').each(function(){     
+	               		$(this).prop('checked',$(this).is(':checked')?false:true);
+	           		 });
+	     	 }
+	    }else{
+	          $('#period_gb').find(':checkbox').prop('checked',false);    // 如控制键取消选中，剩余的checkbox也取消选中
+	      }
+	    });
+	  
+	    $('#checkperiodAll_amazon').change(function(){
+		      if($(this).is(':checked')){
+		         var box = $('#period_amazon').find(':checkbox');
+		         if(box.length==box.filter(':not(:checked)').length){    // 复选框长度和没选中的个数一样 -> 全选 , .not(':checked').length 也可以。
+		         	$('#period_amazon').find(':checkbox').prop('checked',true);
+		         }else{     // 如果有选中个数，-> 反选 
+		            	$('#period_amazon').find(':checkbox').each(function(){     
+		               		$(this).prop('checked',$(this).is(':checked')?false:true);
+		           		 });
+		     	 }
+		    }else{
+		          $('#period_amazon').find(':checkbox').prop('checked',false);    // 如控制键取消选中，剩余的checkbox也取消选中
+		      }
+		    });
+	    
+	    
+    });
+	    
+	 
+    
+            function checkAll(form){
+          		debugger;
+            	var checkperiodAll = document.getElementsByName("checkperiodAll");
+               // var checkperiodAll = document.getElementById("checkperiodAll");
+                var period = document.getElementsByName("period");
+                if(checkperiodAll.checked==true){
+                    if(period.length){
+                        for(var i=0;i<period.length;i++){
+                        	period[i].checked = true;
+                        }
+                    }
+                }else{
+                    if(period.length){
+                        for(var i=0;i<period.length;i++){
+                        	period[i].checked = false;
+                        }
+                    }
+                }
+            }  
+            
+            function check(form){
+            	debugger;
+            	var period = document.getElementsByName("period");
+            	var isChecked = false;
+            	if(period.length){
+                    for(var i=0;i<period.length;i++){
+                    	if(period[i].checked == true){
+                    		isChecked = true;
+                    		break;
+                    	}
+                    }
+                }
+            	if( !isChecked ){
+            		alert('请选择销售周期');
+            		return false;
+            	}
+            	
+            	var needComputingCountry=$('input:radio[name="needComputingCountry"]:checked').val();
+            	if( !needComputingCountry ){
+            		  alert('请选择需要计算的国家');
+            		  return false;
+            	}
+                return true;
+           }
+            
+    </script>
+    
+    <!-- Custom Js -->
+    <script src="/assets/js/custom-scripts.js"></script>
+ 
+
+</body>
+
+</html>

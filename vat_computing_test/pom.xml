@@ -30,6 +30,14 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<developers>
+		<developer>
+			<id>yuezu1026</id>
+			<name>yuezu1026</name>
+			<email>yuezu1026@163.com</email>
+			<url>https://github.com/yuezu1026</url>
+		</developer>
+	</developers>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

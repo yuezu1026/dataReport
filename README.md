@@ -131,3 +131,8 @@ You may obtain a copy of the License at
 
 - 📄 许可证全文见根目录 [`LICENSE`](LICENSE)
 - 📄 版权与声明见 [`NOTICE`](NOTICE)
+
+## 👨‍💻 作者
+
+- GitHub: [yuezu1026](https://github.com/yuezu1026)
+- Email: [yuezu1026@163.com](mailto:yuezu1026@163.com)
